@@ -40,6 +40,8 @@ include(FindPkgConfig)
 pkg_search_module(OPENSSL openssl REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIRS})
 
+include_directories(/usr/include/protobuf-c)
+
 pkg_search_module(CONFIG libconfig REQUIRED)
 include_directories(${CONFIG_INCLUDE_DIRS})
 

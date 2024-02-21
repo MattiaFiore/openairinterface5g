@@ -16,7 +16,7 @@
 #include <netinet/in.h>
 #include <pthread.h>
 
-#include "oai-oran-protolib/builds/ran_messages.pb-c.h"
+#include "Protolib1/builds/ran_messages.pb-c.h"
 
 #define E2AGENT_IN_PORT 6655
 #define E2AGENT_OUT_PORT 6600

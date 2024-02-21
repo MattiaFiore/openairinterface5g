@@ -307,18 +307,40 @@ UeListM* get_ue_list(){
         // add rnti
         ue_info_list[i]->rnti = curr_ue->rnti;
         
-        // add grb info
-        ue_info_list[i]->has_is_gbr = 1;
-        ue_info_list[i]->is_gbr = curr_ue->is_GBR;
-
-        // add tbs info
-        ue_info_list[i]->has_tbs_avg_dl = 1;
-        ue_info_list[i]->tbs_avg_dl = curr_ue->avg_tbs_1s_dl;
-        //ue_info_list[i]->tbs_avg_dl = curr_ue->dl_thr_ue;
-        ue_info_list[i]->has_tbs_avg_ul = 1;
-        ue_info_list[i]->tbs_avg_ul = curr_ue->avg_tbs_1s_ul;
+        
         
         NR_UE_sched_ctrl_t *sched_ctrl = &(curr_ue->UE_sched_ctrl);
+
+        // add rsrp 
+        ue_info_list[i] -> has_ue_rsrp = 1 ;
+        ue_info_list[i] -> ue_rsrp = sched_ctrl -> CSI_repost -> ssb_cri_report -> RSRP;
+
+        //add mcs uplink
+        ue_info_list[i] -> has_ue_mcs_uplink = 1;
+        ue_info_list[i] -> ue_mcs_uplink = sched_ctrl -> sched_pusch -> mcs;
+
+        //add mcs downlink 
+        ue_info_list[i] -> has_ue_mcs_downlink = 1;
+        ue_info_list[i] -> ue_mcs_downlink = sched_ctrl -> sched_pdsch -> mcs ;
+
+        // add cell load 
+        ue_info_list[i] -> has_cell_load = 1;
+        
+        // resource blocks in (pdsch + pusch) / total_prb 
+        ue_info_list[i] -> cell_load = (float) ((sched_ctrl -> sched_pdsch -> rbSize) + (sched_ctrl -> sched_pusch -> rbSize)) / 106 ;
+
+        // add ber uplink 
+        ue_info_list[i] -> has_ue_ber_uplink = 1;
+        ue_info_list[i] -> ue_ber_uplink = (float) (curr_ue -> mac_stats -> ul -> errors) / (8 * curr_ue -> mac_stats -> ul -> total_bytes) ;
+
+        // add ber downlink
+        ue_info_list[i] -> has_ue_ber_downlink = 1;
+        ue_info_list[i] -> ue_ber_downlink = (float) (curr_ue -> mac_stats -> dl -> errors) / (8 * curr_ue -> mac_stats -> dl -> total_bytes);
+
+        
+
+        // RSRP si trova in sched_ctrl->CSI_report->ssb_cri_report-> RSRP
+        /*
         ue_info_list[i]->has_dl_mac_buffer_occupation=1;
         ue_info_list[i]->dl_mac_buffer_occupation = sched_ctrl->num_total_bytes;
 
@@ -330,6 +352,7 @@ UeListM* get_ue_list(){
 
         ue_info_list[i]->has_avg_tbs_per_prb_dl = 1;
         ue_info_list[i]->avg_tbs_per_prb_dl = curr_ue->avg_tbs_per_prb_dl;
+        */
 
     }
     // add a null terminator to the list

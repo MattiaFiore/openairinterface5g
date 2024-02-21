@@ -2261,8 +2261,8 @@ add_executable(nr-softmodem
   ${OPENAIR2_DIR}/E2_AGENT/e2_agent_app.h
   ${OPENAIR2_DIR}/E2_AGENT/e2_message_handlers.c
   ${OPENAIR2_DIR}/E2_AGENT/e2_message_handlers.h
-  ${OPENAIR2_DIR}/E2_AGENT/oai-oran-protolib/builds/ran_messages.pb-c.c
-  ${OPENAIR2_DIR}/E2_AGENT/oai-oran-protolib/builds/ran_messages.pb-c.h
+  ${OPENAIR2_DIR}/E2_AGENT/Protolib1/builds/ran_messages.pb-c.c
+  ${OPENAIR2_DIR}/E2_AGENT/Protolib1/builds/ran_messages.pb-c.h
   )
 
 target_link_libraries(nr-softmodem PRIVATE

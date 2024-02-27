@@ -147,18 +147,11 @@ void ran_write(RANParamMapEntry* target_param_map_entry){
         case RAN_PARAMETER__GNB_ID:
             gnb_id = atoi(target_param_map_entry->string_value);
             break;
-        case RAN_PARAMETER__SOMETHING:
-            something = atoi(target_param_map_entry->string_value);
-            break;
+
         case RAN_PARAMETER__UE_LIST: // if we receive a ue list message we need to apply its content
             apply_ue_info(target_param_map_entry->ue_list);
             break;
-        case RAN_PARAMETER__MAX_PRB:
-            apply_max_cell_prb(target_param_map_entry->int64_value);
-            break;
-        case RAN_PARAMETER__USE_TRUE_GBR:
-            apply_true_gbr(target_param_map_entry->int64_value);
-            break;
+
         default:
             LOG_E(E2_AGENT,"ERROR: cannot write RAN, unrecognized target param %d\n", target_param_map_entry->key);
     }
@@ -313,29 +306,29 @@ UeListM* get_ue_list(){
 
         // add rsrp 
         ue_info_list[i] -> has_ue_rsrp = 1 ;
-        ue_info_list[i] -> ue_rsrp = sched_ctrl -> CSI_repost -> ssb_cri_report -> RSRP;
+        ue_info_list[i] -> ue_rsrp = sched_ctrl -> CSI_repost -> ssb_cri_report.RSRP;
 
         //add mcs uplink
         ue_info_list[i] -> has_ue_mcs_uplink = 1;
-        ue_info_list[i] -> ue_mcs_uplink = sched_ctrl -> sched_pusch -> mcs;
+        ue_info_list[i] -> ue_mcs_uplink = sched_ctrl -> sched_pusch.mcs;
 
         //add mcs downlink 
         ue_info_list[i] -> has_ue_mcs_downlink = 1;
-        ue_info_list[i] -> ue_mcs_downlink = sched_ctrl -> sched_pdsch -> mcs ;
+        ue_info_list[i] -> ue_mcs_downlink = sched_ctrl -> sched_pdsch.mcs ;
 
         // add cell load 
         ue_info_list[i] -> has_cell_load = 1;
         
         // resource blocks in (pdsch + pusch) / total_prb 
-        ue_info_list[i] -> cell_load = (float) ((sched_ctrl -> sched_pdsch -> rbSize) + (sched_ctrl -> sched_pusch -> rbSize)) / 106 ;
+        ue_info_list[i] -> cell_load = (float) ((sched_ctrl -> sched_pdsch.rbSize) + (sched_ctrl -> sched_pusch.rbSize)) / 106 ;
 
         // add ber uplink 
         ue_info_list[i] -> has_ue_ber_uplink = 1;
-        ue_info_list[i] -> ue_ber_uplink = (float) (curr_ue -> mac_stats -> ul -> errors) / (8 * curr_ue -> mac_stats -> ul -> total_bytes) ;
+        ue_info_list[i] -> ue_ber_uplink = (float) (curr_ue -> mac_stats -> ul.errors) / (8 * curr_ue -> mac_stats -> ul.total_bytes) ;
 
         // add ber downlink
         ue_info_list[i] -> has_ue_ber_downlink = 1;
-        ue_info_list[i] -> ue_ber_downlink = (float) (curr_ue -> mac_stats -> dl -> errors) / (8 * curr_ue -> mac_stats -> dl -> total_bytes);
+        ue_info_list[i] -> ue_ber_downlink = (float) (curr_ue -> mac_stats -> dl.errors) / (8 * curr_ue -> mac_stats -> dl.total_bytes);
 
         
 
@@ -385,10 +378,7 @@ void ran_read(RANParameter ran_par_enum, RANParamMapEntry* map_entry){
             map_entry->value_case=RAN_PARAM_MAP_ENTRY__VALUE_STRING_VALUE;
             map_entry->string_value = int_to_charray(gnb_id);
             break;
-        case RAN_PARAMETER__SOMETHING:
-            map_entry->value_case=RAN_PARAM_MAP_ENTRY__VALUE_STRING_VALUE;
-            map_entry->string_value = int_to_charray(something);
-            break;
+
         case RAN_PARAMETER__UE_LIST:
             map_entry->value_case=RAN_PARAM_MAP_ENTRY__VALUE_UE_LIST;
             map_entry->ue_list = get_ue_list();

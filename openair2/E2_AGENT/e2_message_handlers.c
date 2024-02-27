@@ -129,12 +129,10 @@ const char* get_enum_name(RANParameter ran_par_enum){
     {
         case RAN_PARAMETER__GNB_ID:
             return "gnb_id";
-        case RAN_PARAMETER__SOMETHING:
-            return "something";
+ 
         case RAN_PARAMETER__UE_LIST:
             return "ue_list";
-        case RAN_PARAMETER__MAX_PRB:
-            return "max_prb";
+
         default:
             return "unrecognized param";
     }

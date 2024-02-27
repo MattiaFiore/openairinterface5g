@@ -278,11 +278,11 @@ UeListM* get_ue_list(){
 
         // add ber uplink 
         ue_info_list[i] -> has_ue_ber_uplink = 1;
-        ue_info_list[i] -> ue_ber_uplink = (float) (curr_ue -> mac_stats -> ul.errors) / (8 * curr_ue -> mac_stats -> ul.total_bytes) ;
+        ue_info_list[i] -> ue_ber_uplink = (float) (curr_ue -> mac_stats.ul.errors) / (8 * curr_ue -> mac_stats.ul.total_bytes) ;
 
         // add ber downlink
         ue_info_list[i] -> has_ue_ber_downlink = 1;
-        ue_info_list[i] -> ue_ber_downlink = (float) (curr_ue -> mac_stats -> dl.errors) / (8 * curr_ue -> mac_stats -> dl.total_bytes);
+        ue_info_list[i] -> ue_ber_downlink = (float) (curr_ue -> mac_stats.dl.errors) / (8 * curr_ue -> mac_stats.dl.total_bytes);
 
         
 

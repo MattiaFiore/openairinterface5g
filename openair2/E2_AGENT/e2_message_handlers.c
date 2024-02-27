@@ -172,15 +172,12 @@ void apply_true_gbr(int true_gbr){
 }
 
 void apply_ue_info(UeListM* ue_list){
-    LOG_D(E2_AGENT,"in apply_ue_info, ue list size %d\n", ue_list->n_ue_info);
+    LOG_D(E2_AGENT,"in apply_ue_info, ue list size %ld\n", ue_list->n_ue_info);
     // loop the ues and apply what needed to each
     for(int ue=0; ue<ue_list->n_ue_info; ue++){
         LOG_D(E2_AGENT,"in apply_ue_info loop ue %d\n",ue);
         // apply gbr
-        set_gbr_ue(ue_list->ue_info[ue]->rnti,
-            ue_list->ue_info[ue]->tbs_dl_toapply,
-            ue_list->ue_info[ue]->tbs_ul_toapply,
-            ue_list->ue_info[ue]->is_gbr);
+        set_gbr_ue(ue_list->ue_info[ue]->rnti);
 
         // more stuff later when needed     
     }
@@ -304,7 +301,7 @@ UeListM* get_ue_list(){
 
         // add rsrp 
         ue_info_list[i] -> has_ue_rsrp = 1 ;
-        ue_info_list[i] -> ue_rsrp = sched_ctrl -> CSI_repost -> ssb_cri_report.RSRP;
+        ue_info_list[i] -> ue_rsrp = sched_ctrl -> CSI_report -> ssb_cri_report.RSRP;
 
         //add mcs uplink
         ue_info_list[i] -> has_ue_mcs_uplink = 1;

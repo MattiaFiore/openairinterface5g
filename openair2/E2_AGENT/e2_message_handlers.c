@@ -163,13 +163,6 @@ void apply_max_cell_prb(int max_prb){
     pthread_mutex_unlock(&e2_agent_db->mutex);
 }
 
-void apply_true_gbr(int true_gbr){
-    pthread_mutex_lock(&e2_agent_db->mutex);
-    LOG_D(E2_AGENT,"apply_true_gbr called, setting to %d\n",true_gbr);
-    // note that this probably I'll need to protect it with a mutex
-    e2_agent_db->true_gbr = true_gbr;
-    pthread_mutex_unlock(&e2_agent_db->mutex);
-}
 
 void apply_ue_info(UeListM* ue_list){
     LOG_D(E2_AGENT,"in apply_ue_info, ue list size %ld\n", ue_list->n_ue_info);
@@ -183,39 +176,7 @@ void apply_ue_info(UeListM* ue_list){
     }
 }
 
-void set_gbr_ue(rnti_t rnti, float tbs_dl, float tbs_ul, bool is_GBR){
-    LOG_D(E2_AGENT,"in set_gbr_ue\n");
-    // acquire mac layer mutex 
-    NR_UEs_t *UE_info_gnb = &RC.nrmac[0]->UE_info;
-    pthread_mutex_lock(&UE_info_gnb->mutex);
 
-    // iterate ue list until rnti is found
-    NR_UE_info_t **UE_list = UE_info_gnb->list;
-    bool rnti_not_found = true;
-    UE_iterator(UE_list, UE) {
-        LOG_D(E2_AGENT,"in set_gbr_ue ue iterator\n");
-        if(UE->rnti == rnti){
-            LOG_D(E2_AGENT,"in set_gbr_ue rnti found\n");
-            // set gbr
-            UE->is_GBR = is_GBR;
-
-            // if this ue is gbr, then set tbs size too
-            UE->guaranteed_tbs_bytes_dl = tbs_dl;
-            UE->guaranteed_tbs_bytes_ul = tbs_ul;
-            rnti_not_found = false;
-            break;
-            
-        } else {
-            continue;
-        }
-    }
-    if(rnti_not_found){
-        LOG_E(E2_AGENT, "RNTI %u not found\n", rnti);
-    }
-
-    // release mutex
-    pthread_mutex_unlock(&UE_info_gnb->mutex);
-}
 
 char* int_to_charray(int i){
     int length = (snprintf(NULL, 0,"%d",i)+1);

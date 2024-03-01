@@ -258,23 +258,28 @@ UeListM* get_ue_list(){
         
         NR_UE_sched_ctrl_t *sched_ctrl = &(curr_ue->UE_sched_ctrl);
 
+
         // add rsrp 
+        NR_mac_stats_t *stats = curr_ue->mac_stats;
+        const int avg_rsrp = stats->num_rsrp_meas > 0 ? stats->cumul_rsrp / stats->num_rsrp_meas : 0;
+        
         ue_info_list[i] -> has_ue_rsrp = 1 ;
-        ue_info_list[i] -> ue_rsrp = sched_ctrl -> CSI_report.ssb_cri_report.RSRP;
+        ue_info_list[i] -> ue_rsrp = avg_rsrp;
 
         //add mcs uplink
         ue_info_list[i] -> has_ue_mcs_uplink = 1;
-        ue_info_list[i] -> ue_mcs_uplink = sched_ctrl -> sched_pusch.mcs;
+        ue_info_list[i] -> ue_mcs_uplink =sched_ctrl->ul_bler_stats.mcs;
 
+        //sched_ctrl -> sched_pusch.mcs
         //add mcs downlink 
         ue_info_list[i] -> has_ue_mcs_downlink = 1;
-        ue_info_list[i] -> ue_mcs_downlink = sched_ctrl -> sched_pdsch.mcs ;
+        ue_info_list[i] -> ue_mcs_downlink = sched_ctrl->dl_bler_stats.mcs;
 
         // add cell load 
         ue_info_list[i] -> has_cell_load = 1;
         
         // resource blocks in (pdsch + pusch) / total_prb 
-        ue_info_list[i] -> cell_load = (float) ((sched_ctrl -> sched_pdsch.rbSize) + (sched_ctrl -> sched_pusch.rbSize)) / 106 ;
+        ue_info_list[i] -> cell_load = (float) ((sched_ctrl -> sched_pdsch.rbSize) + (sched_ctrl -> sched_pusch.rbSize)) / 212 ;
 
         // add ber uplink 
         ue_info_list[i] -> has_ue_ber_uplink = 1;

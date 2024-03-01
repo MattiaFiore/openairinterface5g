@@ -261,7 +261,7 @@ UeListM* get_ue_list(){
 
         // add rsrp 
         NR_mac_stats_t *stats = curr_ue->mac_stats;
-        const int avg_rsrp = stats->num_rsrp_meas > 0 ? stats->cumul_rsrp / stats->num_rsrp_meas : 0;
+        int avg_rsrp = stats->num_rsrp_meas > 0 ? stats->cumul_rsrp / stats->num_rsrp_meas : 0;
         
         ue_info_list[i] -> has_ue_rsrp = 1 ;
         ue_info_list[i] -> ue_rsrp = avg_rsrp;
